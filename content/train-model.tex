@@ -15,7 +15,7 @@
 
 \subsection{计算梯度}
 
-\begin{frame}[fragile]{优化器}
+\begin{frame}[fragile]{优化器: 计算梯度}
   \begin{python} 
 class Optimizer(object):
   def minimize(self, loss, var_list=None, global_step=None):
@@ -24,21 +24,17 @@ class Optimizer(object):
     return self.apply_gradients(
       grads_and_vars, 
       global_step=global_step)
-  \end{python}
-\end{frame}
 
-\begin{frame}[fragile]{计算梯度}
-  \begin{python} 
-def computea_gradients(loss, var_list):
-  grads = gradients(loss, var_list, grad)
-  return list(zip(grads, var_list))
+  def computea_gradients(loss, var_list):
+    grads = gradients(loss, var_list, grad)
+    return list(zip(grads, var_list))
 
-def gradients(loss, var_list, grads=1):
-  ops_and_grads = {}
-  for op in reversed_graph(loss).topological_sort():
-    grad = op.grad_fn(grad)
-    ops_and_grads[op] = grad
-  return [ops_and_grads.get(var) for var in var_list]
+  def gradients(loss, var_list, grads=1):
+    ops_and_grads = {}
+    for op in reversed_graph(loss).topological_sort():
+      grad = op.grad_fn(grad)
+      ops_and_grads[op] = grad
+    return [ops_and_grads.get(var) for var in var_list]
   \end{python}
 \end{frame}
 
@@ -67,8 +63,7 @@ def grad_func(op, grad):
 \kern-0.1em/\kern-0.15em
 \lower0.25ex\hbox{$\scriptstyle {\partial {y_2}}$}},...,{\raise0.5ex\hbox{$\scriptstyle {\partial L}$}
 \kern-0.1em/\kern-0.15em
-\lower0.25ex\hbox{$\scriptstyle {\partial {y_n}}$}}} \right) \hfill \\
-  \frac{{\partial L}}{{\partial {x_i}}} = \sum\limits_{j = 1}^m {\frac{{\partial L}}{{\partial {y_j}}}\frac{{\partial {y_j}}}{{\partial {x_i}}}} {\text{     for }}i = 1,2,...,n{\text{ }} \hfill \\ 
+\lower0.25ex\hbox{$\scriptstyle {\partial {y_n}}$}}} \right) \hfill \\ 
 \end{gathered} \]
 \end{frame}
 
@@ -110,16 +105,16 @@ def apply_gradients(grads_and_vars, learning_rate):
 
 \subsection{工作流}
 
-\begin{frame}{工作流}
+\begin{frame}{大规模模型训练}
   \begin{figure}
     \centering
     \includegraphics[width=1.0\textwidth]{tf-input-pipeline.png}
   \end{figure}
 \end{frame}
 
-\begin{frame}{协调协议}
+\begin{frame}{初始化模型}
   \begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{py-train-chief.png}
+    \includegraphics[width=1.0\textwidth]{py-train-chief.png}
   \end{figure}
 \end{frame}
